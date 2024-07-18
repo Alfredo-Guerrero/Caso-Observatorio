@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}DIRECCIONES | {{ block.super }}{% endblock %}
+
+
+{% block content_header %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center">
+    <div class="row">
+        <div class="col-auto">
+            <a href="{% url 'IncidenciasApp:api/dir_add' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-user"></i> PERSONAL</a>
+        </div>
+
+        <div class="col-auto">
+            <a href="#" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-chart-bar"></i> REPORTES</a>
+        </div>
+      </div>
+      <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item"><a href="{% url 'IncidenciasApp:api/dash' %}">Escritorio</a></li>
+        <li class="breadcrumb-item active">Personal</li>
+      </ol>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+
+    <!--  MENSAJE PERSONALIZADOS -->
+    {% include 'escritorio/message.html' %}
+
+
+    <!--  ******  AGREGAR NUEVOS USUARIOS **********-->
+    <div class="row justify-content-center">
+        
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+
+            <form method="post" enctype="multipart/form-data"> <!--  enctype="multipart/form-data" para manejar la carga de archivos -->
+                {% csrf_token %}
+
+                    <!-- INCLUSION DE PARTE DE FORMULARIO PARA DATOS GENERALES  -->
+                    {% include 'formulario/datosdir.html' %}
+            </form>
+        </div>
+
+    </div>
+
+    <!--  ******  LISTADO DE DIRECCIONES  **********-->
+    <div class="row justify-content-center">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  
+            <div class="card">
+                
+                <div class="card-header" style="background-color: #1605C7; color: #FFFFFF;">
+                    <div class="card-tools">
+                    <!-- This will cause the card to maximize when clicked -->
+                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i
+                            class="fas fa-expand"></i></button>
+                    <!-- This will cause the card to collapse when clicked -->
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                            class="fas fa-minus"></i></button>
+                    <!-- This will cause the card to be removed when clicked -->
+                    </div>
+                    <!-- /.card-tools -->
+                    <h4 class="card-title">LISTA DE DIRECCIONES ACTIVO</h4>
+                </div>
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-sm table-striped table-hover table-bordered shadow-lg dt-responsive nowrap" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre Distrito :</th>
+                                        <th scope="col">Avenida :</th>
+                                        <th scope="col">Calle :</th>
+                                        <th scope="col">Pasaje :</th>
+                                        <th scope="col">Jiron :</th>
+                                        <th scope="col">Zona :</th>
+                                        <th scope="col">Referencia :</th>
+                                        <th scope="col">ACCION</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    {% for direccion in direcciones %}
+                                    <tr id="direccion-{{ direccion.PR_IN_IDPK_Dir}}">
+                                        <td>{{ direccion.PR_CH_Nombre_Dis  }} </td>
+                                        <td>{{ direccion.PR_CH_avenida   }} </td>
+                                        <td>{{ direccion.PR_CH_calle  }} </td>
+                                        <td>{{ direccion.PR_CH_pasaje   }} </td>
+                                        <td>{{ direccion.PR_CH_jiron  }} </td>
+                                        <td>{{ direccion.PR_CH_zona  }} </td>
+                                        <td>{{ direccion.PR_TE_referencia    }} </td>
+                                        
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm dropdown-toggle text-dark bg-light" type="button" id="dropdownMenuButton"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <!-- Ícono de hamburguesa con clase personalizada -->
+                                                    <i class="fas fa-bars custom-icon"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#" onclick="loadAndUpdate('{{ direccion.PR_IN_IDPK_Dir }}')">
+                                                        <i class="fas fa-sync-alt"></i> Actualizar
+                                                    </a>
+                                                    
+                                                    <a class="dropdown-item" href="#" onclick="confirmDelete('{{ direccion.PR_IN_IDPK_Dir }}')">
+                                                        <i class="fas fa-trash-alt"></i> Borrar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody> 
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ACTUALIZAR DATOS DIRECCIONES  -->
+    {% include 'editar/direccion.html'%}
+    
+    <script>
+        function confirmDelete(dir_id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Estás seguro de que deseas eliminar este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{% url 'IncidenciasApp:api/dir_del' dir_id=0 %}".replace('0', dir_id), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al eliminar el personal del sistema');
+                        }
+                        Swal.fire({
+                            title: 'Eliminación exitosa',
+                            icon: 'success',
+                            timer: 5000
+                        });
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: 'Error al eliminar',
+                            text: error.message,
+                            icon: 'error'
+                        });
+                    });
+                }
+            });
+        }
+        
+        function loadAndUpdate(id_dir) {
+            fetch(`/IncidenciasApp/api/dir_detail/${id_dir}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los datos de la persona');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('distritodir').value = data.PR_CH_Nombre_Dis;
+                    document.getElementById('calledir').value = data.PR_CH_calle;
+                    document.getElementById('avenidadir').value = data.PR_CH_avenida;
+                    document.getElementById('pasajedir').value = data.PR_CH_pasaje;
+                    document.getElementById('jirondir').value = data.PR_CH_jiron;
+                    document.getElementById('zonadir').value = data.PR_CH_zona;
+                    document.getElementById('referenciadir').value = data.PR_TE_referencia;
+                    
+                    $('#editarModal').modal('show');
+                    var form = document.getElementById('editarForm');
+                    form.action = `/IncidenciasApp/api/dir_update/${id_dir}/`;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos de la persona:', error);
+                });
+        }
+    </script>
+    
+
+{% endblock %}

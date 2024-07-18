@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plantilla</title>
+    <!-- Agregar el icono de la pestaña del navegador -->
+    <link rel="icon" href="{% static 'assets/dist/img/icono.png' %}" type="image/png" />
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'assets/dist/css/adminlte.min.css' %}">
+    </head>
+    <body class="hold-transition login-page">
+        
+         <!-- Encabezado con Bootstrap -->
+    <header class="container">
+        <div class="row">
+            <div class="col-2">
+                
+            </div>
+            <div class="col-8">
+                <h2 class="text-center text-primary">FICHA DE ASISTENCIA DIARIA</h2>
+                <hr class="bg-primary">
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido del documento -->
+    <div class="container">
+        <div id="content">
+            <!-- Aquí va el contenido que se exportará al PDF -->
+            
+        </div>
+    </div>
+
+    <!-- Footer con Bootstrap -->
+    <footer class="footer bg-primary text-white text-center">
+        <p class="mb-0">Municipalidad de la Victoria | Exportado el: <span id="fecha"></span> a las <span id="hora"></span></p>
+    </footer>
+
+
+
+        <!-- jQuery -->
+        <script src="{% static 'assets/plugins/jquery/jquery.min.js' %}"></script>
+        <!-- Bootstrap 4 -->
+        <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <!-- AdminLTE App -->
+        <script src="{% static 'assets/dist/js/adminlte.min.js' %}"></script>
+
+        <script>
+            // Obtener fecha y hora actual
+            var fecha = new Date();
+            var fechaFormateada = fecha.toLocaleDateString();
+            var horaFormateada = fecha.toLocaleTimeString();
+    
+            // Mostrar fecha y hora en el footer
+            document.getElementById('fecha').innerText = fechaFormateada;
+            document.getElementById('hora').innerText = horaFormateada;
+        </script>
+        
+    </body>
+</html>

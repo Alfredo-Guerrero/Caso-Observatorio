@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}DISTRITOS | {{ block.super }}{% endblock %}
+
+
+{% block content_header %}
+<div class="d-flex flex-wrap justify-content-between align-items-center">
+    <div class="row">
+        <div class="col-auto">
+            <a href="{% url 'IncidenciasApp:api/dis_add' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-user"></i> PERSONAL</a>
+        </div>
+
+        <div class="col-auto">
+            <a href="#" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-chart-bar"></i> REPORTES</a>
+        </div>
+    </div>
+    <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item"><a href="{% url 'IncidenciasApp:api/dash' %}">Escritorio</a></li>
+        <li class="breadcrumb-item active">Personal</li>
+    </ol>
+</div>
+{% endblock %}
+
+
+{% block content %}
+
+    <!--  MENSAJE PERSONALIZADOS -->
+    {% include 'escritorio/message.html' %}
+
+
+    <!--  ******  AGREGAR NUEVOS USUARIOS **********-->
+    <div class="row justify-content-center">
+        
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+
+            <form method="post" enctype="multipart/form-data"> <!--  enctype="multipart/form-data" para manejar la carga de archivos -->
+                {% csrf_token %}
+
+                    <!-- INCLUSION DE PARTE DE FORMULARIO PARA DATOS GENERALES  -->
+                    {% include 'formulario/datosdis.html' %}
+            </form>
+        </div>
+
+    </div>
+
+    <!--  ******  LISTADO DE DISTRITOS  **********-->
+    <div class="row justify-content-center">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="card">
+                
+                <div class="card-header" style="background-color: #1605C7; color: #FFFFFF;">
+                    <div class="card-tools">
+                    <!-- This will cause the card to maximize when clicked -->
+                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i
+                            class="fas fa-expand"></i></button>
+                    <!-- This will cause the card to collapse when clicked -->
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                            class="fas fa-minus"></i></button>
+                    <!-- This will cause the card to be removed when clicked -->
+                    </div>
+                    <!-- /.card-tools -->
+                    <h4 class="card-title">LISTA DE DISTRITOS ACTIVOS</h4>
+                </div>
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-sm table-striped table-hover table-bordered shadow-lg dt-responsive nowrap" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">NOMBRE DISTRITOS :</th>
+                                        
+                                        <th scope="col">ACCION</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    {% for distrito in distritos %}
+                                    <tr id="distrito-{{ distrito.PR_IN_IDPK_Dis}}">
+                                        <td>{{ distrito.PR_CH_Nombre_Dis }}</td>
+                                        
+
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm dropdown-toggle text-dark bg-light" type="button" id="dropdownMenuButton"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <!-- Ícono de hamburguesa con clase personalizada -->
+                                                    <i class="fas fa-bars custom-icon"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#" onclick="loadAndUpdate('{{ distrito.PR_IN_IDPK_Dis }}')">
+                                                        <i class="fas fa-sync-alt"></i> Actualizar
+                                                    </a>
+                                                    
+                                                    <a class="dropdown-item" href="#" onclick="confirmDelete('{{ distrito.PR_IN_IDPK_Dis }}')">
+                                                        <i class="fas fa-trash-alt"></i> Borrar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody> 
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ACTUALIZAR DATOS DISTRITOS  -->
+    {% include 'editar/distrito.html'%}
+    
+    <script>
+        function confirmDelete(dis_id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Estás seguro de que deseas eliminar este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{% url 'IncidenciasApp:api/dis_del' dis_id=0 %}".replace('0', dis_id), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al eliminar el distrito del sistema');
+                        }
+                        Swal.fire({
+                            title: 'Eliminación exitosa',
+                            icon: 'success',
+                            timer: 5000
+                        });
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: 'Error al eliminar',
+                            text: error.message,
+                            icon: 'error'
+                        });
+                    });
+                }
+            });
+        }
+        
+        function loadAndUpdate(id_dis) {
+            fetch(`/IncidenciasApp/api/dis_detail/${id_dis}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los datos del distrito');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    
+                    document.getElementById('nombredistritodis').value = data.PR_CH_Nombre_Dis;
+            
+    
+                    $('#editarModal').modal('show');
+                    var form = document.getElementById('editarForm');
+                    form.action = `/IncidenciasApp/api/dis_update/${id_dis}/`;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos del distrito:', error);
+                });
+        }
+    </script>
+    
+
+{% endblock %}

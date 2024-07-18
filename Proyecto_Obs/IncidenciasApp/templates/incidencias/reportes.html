@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}PERSONAL | {{ block.super }}{% endblock %}
+
+{% block content_header %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center">
+    <div class="row">
+        <div class="col-auto">
+            <a href="{% url 'IncidenciasApp:api/inc_add' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-user"></i> INCIDENCIAS</a>
+        </div>
+
+        <div class="col-auto">
+            <a href="{% url 'IncidenciasApp:reporte' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-chart-bar"></i> REPORTES</a>
+        </div>
+      </div>
+      <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item"><a href="{% url 'IncidenciasApp:api/dash' %}">Escritorio</a></li>
+        <li class="breadcrumb-item active">Personal</li>
+      </ol>
+  </div>
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'assets/plugins/highcharts-8.1.2/highcharts.js' %}"></script>
+    <script src="{% static 'assets/plugins/highcharts-8.1.2/modules/exporting.js' %}"></script>
+    <script src="{% static 'assets/plugins/highcharts-8.1.2/modules/export-data.js' %}"></script>
+    <script src="{% static 'assets/plugins/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div id="container-diario"></div>
+                <p class="text-center">Total de incidencias diarias: {{ total_diario }}</p>
+                <p class="text-center">Tipos de incidencias más comunes:</p>
+                <ul class="list-group">
+                    {% for tipo, cantidad in tipos_comunes_diario.items %}
+                        <li class="list-group-item">{{ tipo }}: {{ cantidad }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div id="container-mensual"></div>
+                <p class="text-center">Total de incidencias mensuales: {{ total_mensual }}</p>
+                <p class="text-center">Tipos de incidencias más comunes:</p>
+                <ul class="list-group">
+                    {% for tipo, cantidad in tipos_comunes_mensual.items %}
+                        <li class="list-group-item">{{ tipo }}: {{ cantidad }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript">
+        // Datos de ejemplo para reportes
+        var dataDiario = [
+            { name: 'Robo', y: 20 },
+            { name: 'Acoso y/o Acoso Sexual', y: 30 },
+            { name: 'Agresión Física', y: 10 },
+            { name: 'Accidente de Tránsito', y: 25 },
+            { name: 'Accidente de Persona', y: 15 },
+            { name: 'Problema Social', y: 5 },
+            { name: 'Otros Accidentes', y: 5 }
+        ];
+
+        var dataMensual = [
+            { name: 'Robo', y: 40 },
+            { name: 'Acoso y/o Acoso Sexual', y: 15 },
+            { name: 'Agresión Física', y: 5 },
+            { name: 'Accidente de Tránsito', y: 30 },
+            { name: 'Accidente de Persona', y: 10 },
+            { name: 'Problema Social', y: 8 },
+            { name: 'Otros Accidentes', y: 2 }
+        ];
+
+        Highcharts.chart('container-diario', {
+            chart: { type: 'pie' },
+            title: { text: 'Reporte diario de incidencias' },
+            series: [{ name: 'Incidencias', data: dataDiario }]
+        });
+
+        Highcharts.chart('container-mensual', {
+            chart: { type: 'pie' },
+            title: { text: 'Reporte mensual de incidencias' },
+            series: [{ name: 'Incidencias', data: dataMensual }]
+        });
+    </script>
+{% endblock %}

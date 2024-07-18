@@ -1,0 +1,77 @@
+<!-- DETALLE DE PERSONAL PARA LA  ASIGNACION DE DATOS SOCIALES -->
+
+<form id="fotosForm" action="{% url 'archivosApp:api/dat_fot_add' %}" method="post" enctype="multipart/form-data"> 
+    {% csrf_token %}
+
+    <div class="card">
+
+
+        <div class="card-header bg-purple">
+            <h6 class="card-title"><i class="fas fa-images mr-2"></i>
+            </i>SUBIR FOTOS</h6>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!-- Agregar input oculto con valor predeterminado -->
+                    <input type="hidden" name="act" value="1">
+                    <input type="hidden" name="tipof" value="fotoperfil">
+                        <div class="form-group">
+                            <label for="dni6" style="font-size: small; font-family: Arial, sans-serif;">Busqueda de Personal :</label>
+                            <select id="dni6" name="dni6" class="form-control form-control-sm js-example-basic-single-2" style="width: 100%;" required>
+                                <option value="" selected disabled>Selecciona el tipo de documento</option>
+                                {% for doc in  serenos %}
+                                <option value="{{ doc.SERE_P_chDNI }}">{{ doc.SERE_P_chDNI}} - {{ doc.SERE_chNOM}} {{ doc.SERE_chAPEPAT}} {{ doc.SERE_chAPEMAT}}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="dni6" style="font-size: small; font-family: Arial, sans-serif;">Foto de perfil :</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-success text-white">
+                                    <i class="fas fa-upload fa-sm"></i>
+                                </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" id="archivo" name="archivo" class="custom-file-input form-control-sm input-sm" accept=".png, .jpg, .jpeg">
+                                <label class="custom-file-label form-control-sm" for="nombre_foto">Subir Foto</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    
+        </div>
+
+        <div class="card-footer">
+            <div class="row justify-content-end">
+                <div class="col-auto">
+                    <div class="form-group">
+                        <button type="reset" class="btn btn-sm btn-secondary P-2 mr-1 mt-1 btn-block">
+                            <i class="fas fa-times"></i> CANCELAR
+                        </button>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-sm btn-success P-2 mr-1 mt-1 btn-block">
+                            <i class="fas fa-save"></i> GENERAR REGISTRO
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

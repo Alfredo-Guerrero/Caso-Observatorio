@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}DETALLES TRABAJADORES | {{ block.super }}{% endblock %}
+
+
+{% block content_header %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center">
+    <div class="row">
+        <div class="col-auto">
+            <a href="{% url 'PersonasApp:api/per_add' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-user"></i> PERSONAL</a>
+        </div>
+        <div class="col-auto">
+            <a href="{% url 'PersonasApp:api/per_list' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-eye"></i> DETALLES</a>
+        </div>
+        <div class="col-auto">
+            <a href="#" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-chart-bar"></i> REPORTES</a>
+        </div>
+      </div>
+      <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item"><a href="#">Escritorio</a></li>
+        <li class="breadcrumb-item active">Asignaciones</li>
+      </ol>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+
+    <!--  MENSAJE PERSONALIZADOS -->
+    {% include 'escritorio/message.html' %}
+
+
+    <div class="row justify-content-center">
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+          <div class="card">
+              
+              <div class="card-header" style="background-color: #1605C7; color: #FFFFFF;">
+                  <div class="card-tools">
+                  <!-- This will cause the card to maximize when clicked -->
+                  <button type="button" class="btn btn-tool" data-card-widget="maximize"><i
+                          class="fas fa-expand"></i></button>
+                  <!-- This will cause the card to collapse when clicked -->
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                          class="fas fa-minus"></i></button>
+                  <!-- This will cause the card to be removed when clicked -->
+                  </div>
+                  <!-- /.card-tools -->
+                  <h4 class="card-title">LISTA DEL PERSONAL ACTIVO</h4>
+              </div>
+              
+              <div class="card-body">
+                  <div class="table-responsive">
+                      <table id="dataTable" class="table table-sm table-striped table-hover table-bordered shadow-lg dt-responsive nowrap" style="width:100%">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">DNI :</th>
+                                      <th scope="col">DOCUMENTO :</th>
+                                      <th scope="col">APELLIDO PATERNO :</th>
+                                      <th scope="col">APELLIDO MATERNO :</th>
+                                      <th scope="col">NOMBRE :</th>
+                                      <th scope="col">DIRECCION :</th>
+                                      <th scope="col">TELEFONO :</th>
+                                      <th scope="col">CORREO :</th>
+                                      <th scope="col">SEXO :</th>
+                                      <th scope="col">FECHA NACIMIENTO</th>
+                                  </tr>
+                              </thead>
+                              <tbody> 
+                                  {% for persona in personas %}
+                                  <tr id="persona-{{ persona.PR_P_CH_DNI}}">
+                                      <td>{{ persona.PR_CH_TIPODOC  }}</td>
+                                      <td>{{ persona.PR_CH_APEPAT }}</td>
+                                      <td>{{ persona.PR_CH_APEMAT  }} </td>
+                                      <td>{{ persona.PR_CH_NOM   }} </td>
+                                      <td>{{ persona.PR_CH_DIR  }} </td>
+                                      <td>{{ persona.PR_CH_TELEF    }} </td>
+                                      <td>{{ persona.PR_CH_EMAIL  }} </td>
+                                      <td>{{ persona.PR_CH_SEXO }} </td>
+                                      <td>{{ persona.PR_DT_FECNAC }} </td>
+                                      
+                                      <td>
+                                          <div class="dropdown">
+                                              <button class="btn btn-sm dropdown-toggle text-dark bg-light" type="button" id="dropdownMenuButton"
+                                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                  <!-- Ícono de hamburguesa con clase personalizada -->
+                                                  <i class="fas fa-bars custom-icon"></i>
+                                              </button>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editarModal" onclick="openUpdateModal('{{ persona.PR_P_CH_DNI }}')">
+                                                    <i class="fas fa-folder"></i> Archivos
+                                                </a>
+                                                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editarModal{{ persona.PR_P_CH_DNI }}">
+                                                      <i class="fas fa-sync-alt"></i> Actualizar
+                                                  </a> 
+                                                  <a class="dropdown-item" href="#" onclick="confirmDelete('{{ persona.PR_P_CH_DNI }}')">
+                                                      <i class="fas fa-trash-alt"></i> Borrar
+                                                  </a>
+                                              </div>
+                                          </div>
+                                          
+                                      </td>
+                                  
+                                  </tr>
+                                  {% endfor %}
+                              </tbody> 
+                      </table>
+                  </div>
+              </div>
+
+          </div>
+
+      </div>
+    </div>
+
+
+    <!-- MODAL ACTUALIZAR DATOS PERSONAL  -->
+    {% for persona in personas %}
+        {% include 'editar/persona.html'%}
+    {% endfor %}
+
+
+<script>
+    // Función para mostrar la confirmación de eliminación
+    function confirmDelete(per_id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Estás seguro de que deseas eliminar este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, enviar la solicitud de eliminación
+                    fetch("{% url 'PersonasApp:api/per_del' per_id=0 %}".replace('0', per_id), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al eliminar la persona del sistema');
+                        }
+                        // Si la eliminación es exitosa, mostrar mensaje de éxito
+                        Swal.fire({
+                            title: 'Eliminación exitosa',
+                            icon: 'success',
+                            timer: 5000 // Tiempo de duración en milisegundos (2 segundos en este caso)
+                        });
+                        // Actualizar la página después de la eliminación exitosa
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        // Si ocurre un error durante la eliminación, mostrar mensaje de error
+                        Swal.fire({
+                            title: 'Error al eliminar',
+                            text: error.message,
+                            icon: 'error'
+                        });
+                    });
+                }
+            });
+    }
+       
+</script>
+
+<script>
+    function openUpdateModal(dni_per) {
+        // Obtén la referencia al formulario
+        var form = document.getElementById('updateForm');
+        // Construye la URL para la actualización
+        var url = "{% url 'PersonasApp:api/per_update' '0' %}".replace('0', dni_per);
+        // Actualiza el atributo action del formulario
+        form.action = url;
+        // Muestra el modal
+        $('#editarModal').modal('show');
+    }
+</script>
+
+{% endblock %}

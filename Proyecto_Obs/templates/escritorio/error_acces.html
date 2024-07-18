@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Usuario Bloqueado</title>
+  <!-- Agregar el icono de la pestaña del navegador -->
+  <link rel="icon" href="{% static 'assets/dist/img/icono.png' %}" type="image/png" />
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'assets/dist/css/adminlte.min.css' %}">
+</head>
+<body class="hold-transition login-page">
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <div class="login-logo">
+        <a href="#" class="h1"><img src="{% static 'assets/dist/img/obstruido.png' %}" alt="Logo" style="width: 300px; height: auto;"></a>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">  
+      <div class="login-box">
+        <div class="login-logo">
+          <a href="#" class="text-primary"><b>Tu cuenta </b>está Desactivada</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card-body login-card-body text-center">
+          <p><b>No tienes acceso a esta aplicación porque tu cuenta está desactivada.</b></p>
+          <p class="text-danger">Por favor, contacta al administrador del sistema para obtener ayuda.</p>
+        </div>
+          <!-- /.login-card-body -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{% static 'assets/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'assets/dist/js/adminlte.min.js' %}"></script>
+</body>
+</html>

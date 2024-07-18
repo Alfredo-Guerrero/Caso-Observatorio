@@ -1,0 +1,158 @@
+<!-- MODAL PARA EDITAR DATOS DE INCIDENCIAS -->
+<div class="modal fade" id="editarModal" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title" id="editarModalLabel{{ incidencia.PR_IN_IDPK_Inc }}">Actualizar </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Formulario para editar detalles -->
+            <form id="editarForm" method="post" action="">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="distrito{{  incidencia.PR_CH_Nombre_Dis  }}" style="font-size: small; font-family: Arial, sans-serif;">Nombre Distrito :</label>
+                                <div class="input-group">
+                                    <select id="distrito" name="distrito" class="form-control form-control-sm js-example-basic-single" style="width: 100%;" required>
+                                        <option value="" selected disabled>Selecciona el Distrito</option>
+                                    {% for distrito in distritos %}
+                                    <option value="{{ distrito.PR_CH_Nombre_Dis }}">{{ distrito.PR_CH_Nombre_Dis }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                                <input type="text" id="distritoinc{{  incidencia.PR_CH_Nombre_Dis }}"  name="PR_CH_Nombre_Dis" class="form-control form-control-sm" value="{{ incidencia.PR_CH_Nombre_Dis }}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="direccion{{ incidencia.PR_CH_direccion }}" style="font-size: small; font-family: Arial, sans-serif;">Dirección :</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-secondary text-white">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" id="direccion{{ incidencia.PR_CH_direccion }}" name="PR_CH_direccion" class="form-control form-control-sm" value="{{ incidencia.PR_CH_direccion }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="categoria{{ incidencia.PR_CH_categoria }}" style="font-size: small; font-family: Arial, sans-serif;">Categoría :</label>
+                                <div class="input-group">
+                                    <select id="categoria{{ incidencia.PR_CH_categoria }}" name="PR_CH_categoria" class="form-control form-control-sm" required>
+                                        <option value="" selected disabled>Selecciona la Categoría</option>
+                                        <option value="Robo" {% if incidencia.PR_CH_categoria == 'Robo' %} selected {% endif %}>Robo</option>
+                                        <option value="Acoso Y/O Acoso Sexual" {% if incidencia.PR_CH_categoria == 'Acoso Y/O Acoso Sexual' %} selected {% endif %}>Acoso Y/O Acoso Sexual</option>
+                                        <option value="Agresion Fisica" {% if incidencia.PR_CH_categoria == 'Agresion Fisica' %} selected {% endif %}>Agresión Física</option>
+                                        <option value="Accidente Transito" {% if incidencia.PR_CH_categoria == 'Accidente Transito' %} selected {% endif %}>Accidente de Tránsito</option>
+                                        <option value="Accidente Persona" {% if incidencia.PR_CH_categoria == 'Accidente Persona' %} selected {% endif %}>Accidente de Persona</option>
+                                        <option value="Problema Social" {% if incidencia.PR_CH_categoria == 'Problema Social' %} selected {% endif %}>Problema Social</option>
+                                        <option value="Otros Accidentes" {% if incidencia.PR_CH_categoria == 'Otros Accidentes' %} selected {% endif %}>Otros Accidentes</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label for="descripcion{{ incidencia.PR_TE_descripcion }}" style="font-size: small; font-family: Arial, sans-serif;">Descripción de la Incidencia :</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-secondary text-white">
+                                            <i class="fas fa-info-circle"></i>
+                                        </span>
+                                    </div>
+                                    <textarea id="descripcion{{ incidencia.PR_TE_descripcion }}" name="PR_TE_descripcion" class="form-control form-control-sm">{{ incidencia.PR_TE_descripcion }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label for="reportado{{ incidencia.PR_CH_reportado_por }}" style="font-size: small; font-family: Arial, sans-serif;">Reportado por :</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-secondary text-white">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" id="reportado{{ incidencia.PR_CH_reportado_por }}" name="PR_CH_reportado_por" class="form-control form-control-sm" value="{{ incidencia.PR_CH_reportado_por }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label for="fecha{{ incidencia.PR_DA_fecha }}" style="font-size: small; font-family: Arial, sans-serif;">Fecha :</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-secondary text-white">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                    <input type="date" id="fecha{{ incidencia.PR_DA_fecha }}" name="PR_DA_fecha" class="form-control form-control-sm" value="{{ incidencia.PR_DA_fecha }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <label for="hora{{ incidencia.PR_TI_hora }}" style="font-size: small; font-family: Arial, sans-serif;">Hora :</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-secondary text-white">
+                                            <i class="fas fa-clock"></i>
+                                        </span>
+                                    </div>
+                                    <input type="time" id="hora{{ incidencia.PR_TI_hora }}" name="PR_TI_hora" class="form-control form-control-sm" value="{{ incidencia.PR_TI_hora }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="acciontomada{{ incidencia.PR_TE_acciones_tomadas }}" style="font-size: small; font-family: Arial, sans-serif;">Acciones Tomadas :</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-secondary text-white">
+                                            <i class="fas fa-tasks"></i>
+                                        </span>
+                                    </div>
+                                    <textarea id="accionTomada{{ incidencia.PR_TE_acciones_tomadas }}" name="PR_TE_acciones_tomadas" class="form-control form-control-sm">{{ incidencia.PR_TE_acciones_tomadas }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="foto{{ incidencia.PR_IM_foto }}" style="font-size: small; font-family: Arial, sans-serif;">Foto :</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-secondary text-white">
+                                            <i class="fas fa-camera"></i>
+                                        </span>
+                                    </div>
+                                    <input type="file" id="foto{{ incidencia.PR_IM_foto }}" name="PR_IM_foto" class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <!-- Pie de página del formulario -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

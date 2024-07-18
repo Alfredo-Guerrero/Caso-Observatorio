@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}PERSONAL | {{ block.super }}{% endblock %}
+
+{% block content_header %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center">
+    <div class="row">
+        <div class="col-auto">
+            <a href="{% url 'PersonasApp:api/per_add' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-user"></i> PERSONAL</a>
+        </div>
+
+        <div class="col-auto">
+            <a href="{% url 'PersonasApp:reporte' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-chart-bar"></i> REPORTES</a>
+        </div>
+      </div>
+      <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item"><a href="{% url 'PersonasApp:api/dash' %}">Escritorio</a></li>
+        <li class="breadcrumb-item active">Personal</li>
+      </ol>
+  </div>
+{% endblock %}
+
+{% block head %}
+    <script src="{% static 'assets/plugins/highcharts-8.1.2/highcharts.js' %}"></script>
+    <script src="{% static 'assets/plugins/highcharts-8.1.2/modules/exporting.js' %}"></script>
+    <script src="{% static 'assets/plugins/highcharts-8.1.2/modules/export-data.js' %}"></script>
+    <script src="{% static 'assets/plugins/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="container"></div>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript">
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Reporte de Trabajadores',
+                align: 'left'
+            },
+            subtitle: {
+                text:
+                    'Reporte segun su sexo y Fecha de nacimiento' ,
+                align: 'left'
+            },
+            xAxis: {
+                categories: ['USA', 'China', 'Brazil', 'EU', 'Argentina', 'India'],
+                crosshair: true,
+                accessibility: {
+                    description: 'Countries'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '1000 metric tons (MT)'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' (1000 MT)'
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [
+                {
+                    name: 'Femenino',
+                    data: [387749, 280000, 129000, 64300, 54000, 34300]
+                },
+                {
+                    name: 'Masculino',
+                    data: [45321, 140000, 10000, 140500, 19500, 113500]
+                }
+            ]
+        });
+    
+    </script>
+{% endblock %}

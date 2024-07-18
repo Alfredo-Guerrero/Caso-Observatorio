@@ -1,0 +1,125 @@
+<div class="card">
+
+    <div class="card-header" style="background-color: #1605C7; color: #FFFFFF;">
+        <h6 class="card-title"><i class="fas fa-user-plus mr-2"></i>REGISTRO DE DIRECCIONES</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="form-group">
+                    <label for="distrito" style="font-size: small; font-family: Arial, sans-serif;">Nombre Distrito :</label>
+                    <div class="input-group">
+                        <select id="distrito" name="distrito" class="form-control form-control-sm js-example-basic-single" style="width: 100%;" required>
+                            <option value="" selected disabled>Selecciona el Distrito</option>
+                        {% for distrito in distritos %}
+                        <option value="{{ distrito.PR_CH_Nombre_Dis }}">{{ distrito.PR_CH_Nombre_Dis }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="form-group">
+                    <label for="avenida" style="font-size: small; font-family: Arial, sans-serif;">Avenida :</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-secondary text-white">
+                                <i class="fas fa-user-plus"></i>
+                            </span>
+                        </div>
+                        <input type="text" id="avenida" name="avenida" class="form-control form-control-sm" placeholder="Ingrese la Avenida">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="form-group">
+                    <label for="calle" style="font-size: small; font-family: Arial, sans-serif;">Calle :</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-secondary text-white">
+                                <i class="fas fa-user-minus"></i>
+                            </span>
+                        </div>
+                        <input type="text" id="calle" name="calle" class="form-control form-control-sm" placeholder="Ingrese la Calle">
+                    </div>
+                </div>
+            </div>          
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="form-group">
+                    <label for="pasaje" style="font-size: small; font-family: Arial, sans-serif;">Pasaje :</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-secondary text-white">
+                                <i class="fas fa-user-minus"></i>
+                            </span>
+                        </div>
+                        <input type="text" id="pasaje" name="pasaje" class="form-control form-control-sm" placeholder="Ingrese el Pasaje">
+                    </div>
+                </div>
+            </div>    
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="form-group">
+                    <label for="jiron" style="font-size: small; font-family: Arial, sans-serif;">Jiron :</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-secondary text-white">
+                                <i class="fas fa-user-minus"></i>
+                            </span>
+                        </div>
+                        <input type="text" id="jiron" name="jiron" class="form-control form-control-sm" placeholder="Ingrese el Jiron">
+                    </div>
+                </div>
+            </div>    
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="form-group">
+                    <label for="zona" style="font-size: small; font-family: Arial, sans-serif;">Zona :</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-secondary text-white">
+                                <i class="fas fa-user-minus"></i>
+                            </span>
+                        </div>
+                        <input type="text" id="zona" name="zona" class="form-control form-control-sm" placeholder="Ingrese la Zona">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="referencia" style="font-size: small; font-family: Arial, sans-serif;">Referencia :</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-secondary text-white">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                        </div>
+                        <textarea id="referencia" name="referencia" class="form-control form-control-sm">{{ direccion }}</textarea>
+                    </div>
+                </div>
+            </div> 
+        </div>  
+    </div>
+    <div class="card-footer">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <div class="form-group">
+                    <button type="reset" class="btn btn-sm btn-danger P-2 mr-1 mt-1 btn-block">
+                        <i class="fas fa-times"></i> CANCELAR REGISTRO
+                    </button>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-sm btn-success P-2 mr-1 mt-1 btn-block">
+                        <i class="fas fa-save"></i> GENERAR REGISTRO
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}PERSONAL | {{ block.super }}{% endblock %}
+
+
+{% block content_header %}
+  <div class="d-flex flex-wrap justify-content-between align-items-center">
+    <div class="row">
+        <div class="col-auto">
+            <a href="{% url 'PersonasApp:api/per_add' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-user"></i> PERSONAL</a>
+        </div>
+
+        <div class="col-auto">
+            <a href="{% url 'PersonasApp:reporte' %}" class="btn btn-sm btn-dark mr-1 mt-1 btn-block"><i class="fas fa-chart-bar"></i> REPORTES</a>
+        </div>
+      </div>
+      <ol class="breadcrumb m-0">
+        <li class="breadcrumb-item"><a href="{% url 'PersonasApp:api/dash' %}">Escritorio</a></li>
+        <li class="breadcrumb-item active">Personal</li>
+      </ol>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+
+    <!--  MENSAJE PERSONALIZADOS -->
+    {% include 'escritorio/message.html' %}
+
+
+    <!--  ******  AGREGAR NUEVOS USUARIOS **********-->
+    <div class="row justify-content-center">
+        
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+
+            <form method="post" enctype="multipart/form-data"> <!--  enctype="multipart/form-data" para manejar la carga de archivos -->
+                {% csrf_token %}
+
+                    <!-- INCLUSION DE PARTE DE FORMULARIO PARA DATOS GENERALES  -->
+                    {% include 'formulario/datos.html' %}
+            </form>
+        </div>
+
+    </div>
+
+    <!--  ******  LISTADO DE PERSONAS  **********-->
+    <div class="row justify-content-center">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  
+            <div class="card">
+                
+                <div class="card-header" style="background-color: #1605C7; color: #FFFFFF;">
+                    <div class="card-tools">
+                    <!-- This will cause the card to maximize when clicked -->
+                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i
+                            class="fas fa-expand"></i></button>
+                    <!-- This will cause the card to collapse when clicked -->
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                            class="fas fa-minus"></i></button>
+                    <!-- This will cause the card to be removed when clicked -->
+                    </div>
+                    <!-- /.card-tools -->
+                    <h4 class="card-title">LISTA DE TRABAJADORES ACTIVO</h4>
+                </div>
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-sm table-striped table-hover table-bordered shadow-lg dt-responsive nowrap" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">NOMBRE :</th>
+                                        <th scope="col">Nª DOCUMENTO :</th>
+                                        <th scope="col">TIPO DOCUMENTO :</th>
+                                        <th scope="col">SEXO :</th>
+                                        <th scope="col">TELEFONO :</th>
+                                        <th scope="col">EMAIL :</th>
+                                        <th scope="col">FECHA NACIMIENTO :</th>
+                                        <th scope="col">DIRECCION :</th>
+                                        <th scope="col">ACCION</th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    {% for persona in personas %}
+                                    <tr id="persona-{{ persona.PR_P_CH_DNI}}">
+                                        <td>{{ persona.PR_CH_APEPAT  }} {{ persona.PR_CH_APEMAT }} {{ persona.PR_CH_NOM }}</td>
+                                        <td>{{ persona.PR_P_CH_DNI  }} </td>
+                                        <td>{{ persona.PR_CH_TIPODOC   }} </td>
+                                        <td>{{ persona.PR_CH_SEXO   }} </td>
+                                        <td>{{ persona.PR_CH_TELEF  }} </td>
+                                        <td>{{ persona.PR_CH_EMAIL    }} </td>
+                                        <td>{{ persona.PR_DT_FECNAC    }} </td>
+                                        <td>{{ persona.PR_CH_DIR  }} </td>                                      
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm dropdown-toggle text-dark bg-light" type="button" id="dropdownMenuButton"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <!-- Ícono de hamburguesa con clase personalizada -->
+                                                    <i class="fas fa-bars custom-icon"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#" onclick="loadAndUpdate('{{ persona.PR_P_CH_DNI }}')">
+                                                        <i class="fas fa-sync-alt"></i> Actualizar
+                                                    </a>
+                                                    
+                                                    <a class="dropdown-item" href="#" onclick="confirmDelete('{{ persona.PR_P_CH_DNI }}')">
+                                                        <i class="fas fa-trash-alt"></i> Borrar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody> 
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ACTUALIZAR DATOS PERSONAL  -->
+    {% include 'editar/persona.html'%}
+    
+    <script>
+        function confirmDelete(per_id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Estás seguro de que deseas eliminar este registro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch("{% url 'PersonasApp:api/per_del' per_id=0 %}".replace('0', per_id), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error al eliminar el personal del sistema');
+                        }
+                        Swal.fire({
+                            title: 'Eliminación exitosa',
+                            icon: 'success',
+                            timer: 5000
+                        });
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: 'Error al eliminar',
+                            text: error.message,
+                            icon: 'error'
+                        });
+                    });
+                }
+            });
+        }
+        
+        function loadAndUpdate(dni_per) {
+            fetch(`/PersonasApp/api/per_detail/${dni_per}/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al obtener los datos de la persona');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('nombrep').value = data.PR_CH_NOM;
+                    document.getElementById('paternop').value = data.PR_CH_APEPAT;
+                    document.getElementById('maternop').value = data.PR_CH_APEMAT;
+                    document.getElementById('documentop').value = data.PR_CH_TIPODOC;
+                    document.getElementById('dnip').value = data.PR_P_CH_DNI;
+                    document.getElementById('telefonop').value = data.PR_CH_TELEF;
+                    document.getElementById('correop').value = data.PR_CH_EMAIL;
+                    document.getElementById('generop').value = data.PR_CH_SEXO;
+                    document.getElementById('nacimientop').value = data.PR_DT_FECNAC;
+                    document.getElementById('direccionp').value = data.PR_CH_DIR;
+    
+                    $('#editarModal').modal('show');
+                    var form = document.getElementById('editarForm');
+                    form.action = `/PersonasApp/api/per_update/${dni_per}/`;
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos de la persona:', error);
+                });
+        }
+    </script>
+    
+
+{% endblock %}

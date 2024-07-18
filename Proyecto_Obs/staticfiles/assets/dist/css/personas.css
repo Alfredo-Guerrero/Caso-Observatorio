@@ -1,0 +1,8 @@
+.highlight {
+    border: 2px solid #ffeb3b;
+    /* Color de borde amarillo */
+    box-shadow: 0 0 10px #ffeb3b;
+    /* Sombra amarilla */
+    transition: all 0.5s ease;
+    /* Transición suave */
+}

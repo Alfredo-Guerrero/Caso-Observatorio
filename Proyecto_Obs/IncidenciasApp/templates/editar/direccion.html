@@ -1,0 +1,127 @@
+<!-- MODAL PARA EDITAR DATOS DE DIRECCIONES -->
+<div class="modal fade" id="editarModal"  role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+        
+        <div class="modal-header bg-primary">
+            <h5 class="modal-title" id="editarModalLabel{{ direccion.PR_IN_IDPK_Dir }}">Actualizar</h5>
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <!-- Formulario para editar detalles -->
+        <form id="editarForm" method="post" action="">
+        {% csrf_token %}
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <div class="form-group">
+                        <label for="distrito{{  direccion.PR_CH_Nombre_Dis  }}" style="font-size: small; font-family: Arial, sans-serif;">Nombre Distrito :</label>
+                        <div class="input-group">
+                            <select id="distrito" name="distrito" class="form-control form-control-sm js-example-basic-single" style="width: 100%;" required>
+                                <option value="" selected disabled>Selecciona el Distrito</option>
+                            {% for distrito in distritos %}
+                            <option value="{{ distrito.PR_CH_Nombre_Dis }}">{{ distrito.PR_CH_Nombre_Dis }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                        <input type="text" id="distritodir{{  direccion.PR_CH_Nombre_Dis }}"  name="PR_CH_Nombre_Dis" class="form-control form-control-sm" value="{{ direccion.PR_CH_Nombre_Dis }}">
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <label for="avenida{{  direccion.PR_CH_avenida }}" style="font-size: small; font-family: Arial, sans-serif;">Avenida :</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-secondary text-white">
+                                    <i class="fas fa-user-plus"></i>
+                                </span>
+                            </div>
+                            <input type="text" id="avenidadir{{  direccion.PR_CH_avenida }}" name="PR_CH_avenida" class="form-control form-control-sm" value="{{ direccion.PR_CH_avenida }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <label for="calle{{  direccion.PR_CH_calle }}" style="font-size: small; font-family: Arial, sans-serif;">Calle :</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-secondary text-white">
+                                    <i class="fas fa-user-minus"></i>
+                                </span>
+                            </div>
+                            <input type="text" id="calledir{{  direccion.PR_CH_calle }}" name="PR_CH_calle" class="form-control form-control-sm" value="{{ direccion.PR_CH_calle }}">
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <label for="pasaje{{  direccion.PR_CH_pasaje }}" style="font-size: small; font-family: Arial, sans-serif;">Pasaje :</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-secondary text-white">
+                                    <i class="fas fa-id-card"></i>
+                                </span>
+                            </div>
+                            <input type="text" id="pasajedir{{  direccion.PR_CH_pasaje }}" name="PR_CH_pasaje" class="form-control form-control-sm" value="{{ direccion.PR_CH_pasaje }}" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <label for="jiron{{  direccion.PR_CH_jiron }}" style="font-size: small; font-family: Arial, sans-serif;">Jiron :</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-secondary text-white">
+                                    <i class="fas fa-phone"></i>
+                                </span>
+                            </div>
+                            <input type="text" id="jirondir{{  direccion.PR_CH_jiron }}" name="PR_CH_jiron" class="form-control form-control-sm" value="{{ direccion.PR_CH_jiron }}" >
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <label for="zona{{  direccion.PR_CH_zona }}" style="font-size: small; font-family: Arial, sans-serif;">Zona :</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-secondary text-white">
+                                    <i class="fas fa-phone"></i>
+                                </span>
+                            </div>
+                            <input type="text" id="zonadir{{  direccion.PR_CH_zona }}" name="PR_CH_zona" class="form-control form-control-sm" value="{{ direccion.PR_CH_zona }}" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        <label for="referencia{{  direccion.PR_TE_referencia }}" style="font-size: small; font-family: Arial, sans-serif;">Direccion :</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-secondary text-white">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" id="referenciadir{{  direccion.PR_TE_referencia }}" name="PR_TE_referencia" class="form-control form-control-sm" value="{{ direccion.PR_TE_referencia }}">
+                        </div>
+                    </div>
+                </div> 
+                <input type="hidden" name="action" value="update">
+            </div>  
+        </div>
+        <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+        </form>
+    </div>
+    </div>
+</div>

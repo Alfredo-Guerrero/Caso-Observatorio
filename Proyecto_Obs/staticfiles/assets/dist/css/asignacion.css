@@ -1,0 +1,15 @@
+th.sticky-sereno,
+td.sticky-sereno {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: #fff;
+    /* Para cubrir el borde de la primera columna */
+}
+
+
+/* Ajustar el tamaño de los badges cuando el turno y la asistencia están juntos en la misma celda */
+
+.ver-datos-relacionados.con-asistencia span.badge:first-child {
+    width: 50%;
+}

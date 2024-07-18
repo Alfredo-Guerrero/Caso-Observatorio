@@ -1,0 +1,194 @@
+<!-- Sidebar user panel (optional) -->
+{% load static %}
+
+<!-- Brand Logo -->
+<a href="{% url 'PersonasApp:api/dash' %}" class="brand-link">
+  <img
+    src="{% static 'assets/dist/img/icono.png' %}"
+    alt="AdminLTE Logo"
+    class="brand-image img-circle elevation-3"
+    style="opacity: 0.8"
+  />
+  <span class="brand-text font-weight-light">SISTEMA OBS</span>
+</a>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        {% if request.user.auth_IM_photo %}
+            <img src="{{ request.user.auth_IM_photo.url }}" class="img-circle elevation-2" alt="User Image" />
+        {% else %}
+            <img src="{% static 'assets/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image" />
+        {% endif %}
+    </div>
+    <div class="info">
+      <a href="#" class="d-block">{{ request.user.username }}</a>
+    </div>
+  </div>
+
+  <!-- SidebarSearch Form -->
+  <div class="form-inline">
+    <div class="input-group" data-widget="sidebar-search">
+      <input
+        class="form-control form-control-sidebar"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        id="menuSearch"
+        onkeyup="menuSearchFunction()"
+      />
+      <div class="input-group-append">
+        <button class="btn btn-sidebar">
+          <i class="fas fa-search fa-fw"></i>
+        </button>
+      </div>
+    </div>
+</div>
+
+  <!-- Sidebar Menu -->
+  <nav class="mt-2">
+    <ul
+      class="nav nav-pills nav-sidebar flex-column"
+      data-widget="treeview"
+      role="menu"
+      data-accordion="false"
+    >
+      <!-- Add icons to the links using the .nav-icon class
+                  with font-awesome or any other icon font library -->
+
+      <li class="nav-item">
+        <a href="#" class="nav-link active">
+          <i class="nav-icon fas fa-tachometer-alt"></i>
+          <p>
+            ESCRITORIO
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+      </li>
+      <!-- MODULO PARA GESTION DE REGISTRO DE INCIDENCIAS -->
+      <li class="nav-header">MOD.INCIDENCIAS</li>
+        <!-- ITEM 1 -->
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-user-tie nav-icon"></i>
+          <p>
+            Gestion de Incidencias 
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'IncidenciasApp:api/inc_add' %}" class="nav-link">
+            <i class="fas fa-user-plus nav-icon"></i>
+              <p>Registro de Incidencias</p>
+            </a>
+          </li> 
+        </ul>
+      </li>
+
+      <!-- MODULO PARA REGISTRO DE PERSONAS -->
+      <li class="nav-header">MOD.TRABAJADORES</li>
+        <!-- ITEM 1 -->
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-user-tie nav-icon"></i>
+          <p>
+            Gestion de Trabajadores 
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'PersonasApp:api/per_add' %}" class="nav-link">
+            <i class="fas fa-user-plus nav-icon"></i>
+              <p>Registro de trabajores</p>
+            </a>
+          </li> 
+        </ul>
+      </li>
+
+      <!-- MODULO PARA GESTION DE REGISTRO DE DISTRITROS -->
+      <li class="nav-header">MOD.DISTRITOS</li>
+        <!-- ITEM 1 -->
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-user-tie nav-icon"></i>
+          <p>
+            Gestion de Distritos 
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'IncidenciasApp:api/dis_add' %}" class="nav-link">
+            <i class="fas fa-user-plus nav-icon"></i>
+              <p>Registro de Distritos</p>
+            </a>
+          </li> 
+        </ul>
+      </li>
+
+      <!-- MODULO PARA GESTION DE REGISTRO DE DIRECCIONES -->
+      <li class="nav-header">MOD.DIRECCIONES</li>
+        <!-- ITEM 1 -->
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="fas fa-user-tie nav-icon"></i>
+          <p>
+            Gestion de Direcciones 
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'IncidenciasApp:api/dir_add' %}" class="nav-link">
+            <i class="fas fa-user-plus nav-icon"></i>
+              <p>Registro de Direcciones</p>
+            </a>
+          </li> 
+        </ul>
+      </li>
+
+      <!-- MENU PARA MODULOS DE ACCESOS DE USUARIOS-->
+      
+      <li class="nav-header">MOD.ACCESOS</li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="nav-icon fas fa-key"></i>
+          <p>
+          Credenciales
+            <i class="fas fa-angle-left right"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'UsuariosApp:api/user' %}" class="nav-link">
+              <i class="far fa-user nav-icon"></i>
+              <p>Usuarios</p>
+            </a>
+          </li> 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-id-badge nav-icon"></i>
+              <p>Roles</p>
+            </a>
+          </li> 
+        </ul>
+      </li>
+      
+
+      <!-- INFORMACIÒN DEL SISTEMA-->
+      <li class="nav-item">
+        <a href="#" class="nav-link" data-toggle="modal" data-target="#infoModal">
+          <i class="nav-icon fas fa-info-circle text-info"></i>
+          <p>Acerca de</p>
+        </a>
+    </li>
+
+    </ul>
+  </nav>
+</div>
+<!-- /.sidebar-menu -->
